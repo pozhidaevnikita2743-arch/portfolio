@@ -42,6 +42,127 @@
   animation: gradientSlide 2s linear infinite;
 }
 
+/* ── Browser mockup ─────────────────────────────────────────────── */
+.browserMockup {
+  background: #0f0f14;
+  border-bottom: 1px solid var(--border-subtle);
+  overflow: hidden;
+}
+
+.browserBar {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: 8px 12px;
+  background: #1a1a24;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+
+.browserDots {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: block;
+}
+
+.dot[data-color="red"]    { background: #ff5f57; }
+.dot[data-color="yellow"] { background: #febc2e; }
+.dot[data-color="green"]  { background: #28c840; }
+
+.browserUrl {
+  flex: 1;
+  background: #0d0d18;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 4px;
+  padding: 3px 10px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 260px;
+}
+
+.browserScreen {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+}
+
+.screenshot {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  display: block;
+  transition: transform 0.6s ease, filter 0.4s ease;
+  filter: brightness(0.9);
+}
+
+.card:hover .screenshot {
+  transform: scale(1.03);
+  filter: brightness(1);
+}
+
+.screenshotOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  text-decoration: none;
+  transition: background var(--t-normal);
+  cursor: pointer;
+}
+
+.screenshotOverlay:hover {
+  background: rgba(0, 255, 213, 0.12);
+}
+
+.overlayIcon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--neon-teal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000;
+  opacity: 0;
+  transform: scale(0.7);
+  transition: opacity var(--t-normal), transform var(--t-normal);
+}
+
+.overlayText {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--neon-teal);
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity var(--t-normal), transform var(--t-normal);
+}
+
+.screenshotOverlay:hover .overlayIcon,
+.screenshotOverlay:hover .overlayText {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+/* ── Card body ──────────────────────────────────────────────────── */
 .body {
   padding: var(--sp-6);
   flex: 1;
@@ -133,3 +254,13 @@
 
 .linkLive { color: var(--neon-teal); }
 .linkLive:hover { color: #fff; text-shadow: 0 0 8px var(--neon-teal); }
+
+@keyframes revealUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes gradientSlide {
+  from { background-position: 0% 50%; }
+  to   { background-position: 200% 50%; }
+}

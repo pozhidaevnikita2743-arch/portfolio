@@ -2,6 +2,7 @@ import { Project } from './types'
 
 export const GITHUB_USER = 'pozhidaevnikita2743-arch'
 export const GITHUB_BASE  = `https://github.com/${GITHUB_USER}`
+const GHPAGES = `https://${GITHUB_USER}.github.io`
 
 export const projects: Project[] = [
   {
@@ -12,6 +13,7 @@ export const projects: Project[] = [
     github: 'oaklet-store-v2-',
     githubBase: GITHUB_BASE,
     live: 'https://oaklet-store.vercel.app',
+    image: '/img/projects/oaklet-store.jpg',
     featured: true,
     year: 2025,
     category: 'commercial',
@@ -23,6 +25,8 @@ export const projects: Project[] = [
     tech: ['HTML', 'CSS', 'JavaScript'],
     github: 'kaltansky-modern',
     githubBase: GITHUB_BASE,
+    live: `${GHPAGES}/kaltansky-modern/`,
+    image: '/img/projects/kaltansky-modern.jpg',
     year: 2025,
     category: 'corporate',
   },
@@ -33,6 +37,8 @@ export const projects: Project[] = [
     tech: ['HTML', 'CSS', 'JavaScript'],
     github: 'kaltansky-corporate',
     githubBase: GITHUB_BASE,
+    live: `${GHPAGES}/kaltansky-corporate/`,
+    image: '/img/projects/kaltansky-corporate.jpg',
     year: 2025,
     category: 'corporate',
   },
@@ -43,6 +49,8 @@ export const projects: Project[] = [
     tech: ['HTML', 'CSS', 'JavaScript'],
     github: 'photo-site-3.0',
     githubBase: GITHUB_BASE,
+    live: `${GHPAGES}/photo-site-3.0/`,
+    image: '/img/projects/photo-site-3.jpg',
     year: 2025,
     category: 'portfolio',
   },
@@ -53,6 +61,8 @@ export const projects: Project[] = [
     tech: ['HTML', 'CSS', 'JavaScript', 'i18n'],
     github: 'PHOTOSITE-on-3lng-2.0',
     githubBase: GITHUB_BASE,
+    live: `${GHPAGES}/PHOTOSITE-on-3lng-2.0/`,
+    image: '/img/projects/photo-site-multilang.jpg',
     year: 2025,
     category: 'portfolio',
   },
