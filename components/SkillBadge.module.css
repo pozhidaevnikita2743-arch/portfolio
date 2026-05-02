@@ -1,0 +1,45 @@
+.badge {
+  opacity: 0;
+  transform: translateX(-20px);
+}
+
+.visible {
+  animation: revealLeft 0.5s ease var(--delay, 0ms) both;
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--sp-2);
+}
+
+.name {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--text-primary);
+  letter-spacing: 0.02em;
+}
+
+.level {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--neon-teal);
+}
+
+.track {
+  height: 3px;
+  background: var(--bg-raised);
+  border-radius: var(--r-full);
+  overflow: hidden;
+}
+
+.bar {
+  height: 100%;
+  width: var(--bar-w, 0%);
+  background: linear-gradient(90deg, var(--neon-teal), var(--neon-purple));
+  border-radius: var(--r-full);
+  transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 0 8px var(--neon-teal-glow);
+}
