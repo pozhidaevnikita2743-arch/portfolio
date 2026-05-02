@@ -6,6 +6,7 @@ export interface Project {
   github: string
   githubBase: string
   live?: string
+  image?: string
   featured?: boolean
   year: number
   category: ProjectCategory

@@ -1,5 +1,6 @@
 'use client'
 import { useRef } from 'react'
+import Image from 'next/image'
 import { Project } from '@/lib/types'
 import s from './ProjectCard.module.css'
 
@@ -36,6 +37,9 @@ interface Props {
 export default function ProjectCard({ project, index, inView }: Props) {
   const tilt = useTilt()
   const githubUrl = `${project.githubBase}/${project.github}`
+  const displayUrl = project.live
+    ? project.live.replace(/^https?:\/\//, '').replace(/\/$/, '')
+    : `github.com/${project.github}`
 
   return (
     <div
@@ -47,6 +51,41 @@ export default function ProjectCard({ project, index, inView }: Props) {
     >
       <div className={s.card}>
         <div className={s.accentLine} />
+
+        {project.image && (
+          <div className={s.browserMockup}>
+            <div className={s.browserBar}>
+              <div className={s.browserDots}>
+                <span className={s.dot} data-color="red" />
+                <span className={s.dot} data-color="yellow" />
+                <span className={s.dot} data-color="green" />
+              </div>
+              <div className={s.browserUrl}>{displayUrl}</div>
+            </div>
+            <div className={s.browserScreen}>
+              <Image
+                src={project.image}
+                alt={`${project.title} screenshot`}
+                width={1280}
+                height={800}
+                className={s.screenshot}
+                sizes="(max-width: 768px) 100vw, 400px"
+              />
+              {project.live && (
+                <a
+                  href={project.live}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={s.screenshotOverlay}
+                  aria-label={`Open live site: ${project.title}`}
+                >
+                  <span className={s.overlayIcon}><IconExternal /></span>
+                  <span className={s.overlayText}>View Live</span>
+                </a>
+              )}
+            </div>
+          </div>
+        )}
 
         <div className={s.body}>
           <div className={s.header}>
