@@ -36,7 +36,7 @@ interface Props {
 
 export default function ProjectCard({ project, index, inView }: Props) {
   const tilt = useTilt()
-  const githubUrl = `${project.githubBase}/${project.github}`
+  const githubUrl = project.github ? `${project.githubBase}/${project.github}` : null
   const displayUrl = project.live
     ? project.live.replace(/^https?:\/\//, '').replace(/\/$/, '')
     : `github.com/${project.github}`
@@ -104,16 +104,18 @@ export default function ProjectCard({ project, index, inView }: Props) {
         </div>
 
         <div className={s.footer}>
-          <a
-            href={githubUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={s.link}
-            aria-label={`View ${project.title} on GitHub`}
-          >
-            <IconGitHub />
-            GitHub
-          </a>
+          {githubUrl && (
+            <a
+              href={githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={s.link}
+              aria-label={`View ${project.title} on GitHub`}
+            >
+              <IconGitHub />
+              GitHub
+            </a>
+          )}
           {project.live && (
             <a
               href={project.live}
