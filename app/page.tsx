@@ -1,35 +1,14 @@
 'use client'
 import Navbar from '@/components/Navbar'
-import HeroCanvas from '@/components/HeroCanvas'
+import HeroFigure from '@/components/HeroFigure'
 import CursorGlow from '@/components/CursorGlow'
 import SectionReveal from '@/components/SectionReveal'
-import ProjectCard from '@/components/ProjectCard'
 import SkillBadge from '@/components/SkillBadge'
+import HorizontalMarquee from '@/components/projects/HorizontalMarquee'
 import { useInView } from '@/lib/hooks/useInView'
 import { projects } from '@/lib/projects'
 import { skills } from '@/lib/skills'
 import s from './page.module.css'
-
-function ProjectsSection() {
-  const { ref, inView } = useInView(0.05)
-  return (
-    <section
-      className={s.projects}
-      id="projects"
-      ref={ref as React.RefObject<HTMLElement>}
-    >
-      <div className="container">
-        <div className={s.sectionLabel}>// projects</div>
-        <h2 className={s.sectionTitle}>Selected Work</h2>
-        <div className={s.projectGrid}>
-          {projects.map((project, i) => (
-            <ProjectCard key={project.id} project={project} index={i} inView={inView} />
-          ))}
-        </div>
-      </div>
-    </section>
-  )
-}
 
 function SkillsSection() {
   const { ref, inView } = useInView(0.1)
@@ -60,7 +39,7 @@ export default function Page() {
 
       {/* HERO */}
       <section className={s.hero} id="hero">
-        <HeroCanvas />
+        <HeroFigure />
         <div className={`container ${s.heroContent}`}>
           <div className={s.heroEyebrow}>
             <span className={s.eyebrowDot} />
@@ -74,11 +53,11 @@ export default function Page() {
           </h1>
 
           <p className={s.heroTagline}>
-            Web Developer<span className={s.taglineSep}> / </span>Tula, Russia
+            Web Developer<span className={s.taglineSep}> / </span>Russia
           </p>
 
           <p className={s.heroBio}>
-            Building commercial web products from Tula.
+            Building commercial web products from Russia.
             Full-stack focus on Next.js, TypeScript, and crafted UI.
           </p>
 
@@ -101,7 +80,7 @@ export default function Page() {
             <div className={s.sectionLabel}>// about</div>
             <h2 className={s.sectionTitle}>Who I Am</h2>
             <p className={s.aboutText}>
-              Web developer from Tula, Russia. I build commercial websites and
+              Web developer from Russia. I build commercial websites and
               web applications — from company landing pages to full e-commerce
               platforms. Everything I ship is custom-coded, no templates, no shortcuts.
             </p>
@@ -110,7 +89,7 @@ export default function Page() {
       </SectionReveal>
 
       {/* PROJECTS */}
-      <ProjectsSection />
+      <HorizontalMarquee projects={projects} />
 
       {/* SKILLS */}
       <SectionReveal>
@@ -137,7 +116,7 @@ export default function Page() {
                 GitHub
               </a>
               <a
-                href="https://t.me/"
+                href="https://t.me/soleth_2743"
                 className={s.contactLink}
               >
                 <IconTelegram />
