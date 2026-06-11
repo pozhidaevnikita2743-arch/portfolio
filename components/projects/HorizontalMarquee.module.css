@@ -4,6 +4,7 @@
   background: var(--bg-void);
 }
 
+
 .stickyViewport {
   position: sticky;
   top: 0;
@@ -303,4 +304,88 @@
   background: var(--neon-teal);
   box-shadow: 0 0 6px var(--neon-teal);
   transform: scale(1.4);
+}
+
+/* ── Scroll spacer (desktop only) ───────────────────────────────── */
+.scrollSpacer { height: 480px; }
+
+/* ── Mobile ≤ 767px ──────────────────────────────────────────────
+   Replace sticky coverflow with native horizontal snap scroll.
+   framer-motion applies transforms as inline styles — override with
+   !important so CSS wins.
+   ──────────────────────────────────────────────────────────────── */
+@media (max-width: 767px) {
+  /* 1. Section becomes normal document flow */
+  .stickyViewport {
+    position: relative;
+    height: auto;
+    overflow: visible;
+    padding: 72px 0 40px;
+    justify-content: flex-start;
+    gap: 0;
+  }
+
+  /* 2. Header back to normal flow */
+  .sectionHeader {
+    position: relative;
+    top: auto;
+    left: auto;
+    transform: none;
+    pointer-events: auto;
+    white-space: normal;
+    text-align: center;
+    padding: 0 20px;
+    margin-bottom: 24px;
+  }
+
+  /* 3. Horizontal snap scroll track */
+  .windowTrack {
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: stretch;
+    overflow-x: scroll;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding: 8px 20px 20px;
+    gap: 12px;
+  }
+  .windowTrack::-webkit-scrollbar { display: none; }
+
+  /* 4. Cards: reset position + override framer-motion inline transforms */
+  .windowCard {
+    position: relative !important;
+    left: auto !important;
+    margin-left: 0 !important;
+    width: calc(100vw - 48px) !important;
+    min-width: calc(100vw - 48px) !important;
+    flex-shrink: 0;
+    scroll-snap-align: center;
+    /* Override framer-motion inline styles */
+    transform: none !important;
+    opacity: 1 !important;
+    filter: brightness(1) !important;
+    z-index: 1 !important;
+  }
+
+  /* 5. MacWindow inner: tighten for narrow screens */
+  .screenshotWrap { height: 200px; }
+  .windowBody     { padding: 14px 16px 18px; }
+  .urlInput       { width: auto; max-width: calc(100% - 28px); }
+  .projectLinks   { flex-wrap: wrap; }
+
+  /* 6. Nav dots: back to normal flow, centered */
+  .navDots {
+    position: relative;
+    bottom: auto;
+    left: auto;
+    transform: none;
+    margin-top: 16px;
+    justify-content: center;
+  }
+
+  /* 7. Hide desktop scroll spacer on mobile */
+  .scrollSpacer { display: none; }
 }
