@@ -12,8 +12,7 @@ export default function HeroFigure() {
   const targetT    = useRef(0.5)
   const currentT   = useRef(0.5)
   const raf        = useRef<number>(undefined)
-  const [progress, setProgress] = useState(0)
-  const [ready, setReady]       = useState(false)
+  const [ready, setReady] = useState(false)
 
   useEffect(() => {
     const canvas  = canvasRef.current
@@ -59,11 +58,9 @@ export default function HeroFigure() {
         if (cancelled) return
         drawVideoFrame()
         frames.push(ctx.getImageData(0, 0, W * dpr, H * dpr))
-        setProgress(Math.min(99, Math.round(((i + 1) / totalFrames) * 100)))
       }
 
       framesRef.current = frames
-      setProgress(100)
       setReady(true)
 
       function loop() {
@@ -94,12 +91,6 @@ export default function HeroFigure() {
 
   return (
     <div ref={wrapperRef} className={s.wrapper}>
-      {!ready && (
-        <div className={s.loader}>
-          <div className={s.loaderBar} style={{ width: `${progress}%` }} />
-          <span className={s.loaderText}>{progress}%</span>
-        </div>
-      )}
       <video
         ref={videoRef}
         src="/hero-figure.mp4"

@@ -28,10 +28,11 @@ export default function HorizontalMarquee({ projects }: Props) {
 
   const MAX_PROGRESS = projects.length - 1
 
-  // Wheel hijack
+  // Wheel hijack + snap-to-card
   useEffect(() => {
     const section = sectionRef.current
     if (!section) return
+    let snapTimer: ReturnType<typeof setTimeout>
 
     function handleWheel(e: WheelEvent) {
       const rect = section!.getBoundingClientRect()
@@ -45,10 +46,19 @@ export default function HorizontalMarquee({ projects }: Props) {
       rawProgress.set(
         Math.min(Math.max(cur + e.deltaY / SCROLL_PER_CARD, 0), MAX_PROGRESS)
       )
+
+      // After scroll stops, snap to nearest card
+      clearTimeout(snapTimer)
+      snapTimer = setTimeout(() => {
+        rawProgress.set(Math.round(Math.min(Math.max(rawProgress.get(), 0), MAX_PROGRESS)))
+      }, 150)
     }
 
     window.addEventListener('wheel', handleWheel, { passive: false })
-    return () => window.removeEventListener('wheel', handleWheel)
+    return () => {
+      window.removeEventListener('wheel', handleWheel)
+      clearTimeout(snapTimer)
+    }
   }, [MAX_PROGRESS, rawProgress])
 
   // Desktop: sync nav dots from spring progress value
