@@ -1,10 +1,18 @@
 .badge {
-  opacity: 1;
-  transform: translateX(0);
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  transition: background 0.25s ease, border-color 0.25s ease;
+  cursor: default;
 }
 
 .visible {
   animation: revealLeft 0.5s ease var(--delay, 0ms) backwards;
+}
+
+.hovered {
+  background: rgba(0, 212, 255, 0.04);
+  border-color: rgba(0, 212, 255, 0.12);
 }
 
 .top {
@@ -26,13 +34,21 @@
   font-family: var(--font-mono);
   font-size: var(--text-xs);
   color: var(--neon-teal);
+  transition: transform 0.2s ease;
+  display: inline-block;
 }
 
+.hovered .level {
+  transform: scale(1.15);
+}
+
+/* ── Bar track ── */
 .track {
+  position: relative;
   height: 3px;
   background: var(--bg-raised);
   border-radius: var(--r-full);
-  overflow: hidden;
+  overflow: visible;
 }
 
 .bar {
@@ -40,6 +56,17 @@
   width: var(--bar-w, 0%);
   background: linear-gradient(90deg, var(--neon-teal), var(--neon-purple));
   border-radius: var(--r-full);
-  transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 0 8px var(--neon-teal-glow);
+  transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
+  box-shadow: 0 0 6px var(--neon-teal-glow);
+}
+
+.barHover {
+  box-shadow: 0 0 14px var(--neon-teal), 0 0 4px var(--neon-purple);
+}
+
+.dot { display: none; }
+
+@keyframes revealLeft {
+  from { opacity: 0; transform: translateX(-12px); }
+  to   { opacity: 1; transform: translateX(0); }
 }
