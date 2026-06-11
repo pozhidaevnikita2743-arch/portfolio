@@ -1,10 +1,10 @@
 .badge {
-  opacity: 0;
-  transform: translateX(-20px);
+  opacity: 1;
+  transform: translateX(0);
 }
 
 .visible {
-  animation: revealLeft 0.5s ease var(--delay, 0ms) both;
+  animation: revealLeft 0.5s ease var(--delay, 0ms) backwards;
 }
 
 .top {

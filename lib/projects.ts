@@ -14,6 +14,7 @@ export const projects: Project[] = [
     githubBase: GITHUB_BASE,
     live: 'https://oaklet-store.vercel.app',
     image: '/img/projects/oaklet-store.jpg',
+    previewPosition: '0% 35%',   // skip giant hero text, show catalog area
     featured: true,
     year: 2025,
     category: 'commercial',

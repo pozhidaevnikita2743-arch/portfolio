@@ -21,7 +21,7 @@
   position: absolute;
   inset: 0;
   z-index: 2;
-  background: linear-gradient(to top, var(--bg-void) 0%, transparent 25%);
+  background: linear-gradient(to top, var(--bg-void) 0%, transparent 35%);
   pointer-events: none;
 }
 

@@ -1,87 +1,213 @@
+/* ── Outer shell ──────────────────────────────────────────────────
+   Full-width fixed container. Transparent — never blocks clicks
+   outside the pill.
+   ──────────────────────────────────────────────────────────────── */
 .header {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 100;
-  height: var(--header-h);
-  transition:
-    background var(--t-normal),
-    border-color var(--t-normal),
-    backdrop-filter var(--t-normal);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  pointer-events: none;
   animation: slideDown 0.6s ease both;
 }
 
-.header.scrolled {
-  background: rgba(10, 10, 15, 0.85);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--border-subtle);
-}
-
-.inner {
+/* ── Pill ─────────────────────────────────────────────────────────
+   framer-motion layout measures this element and animates between
+   the full-bar and compact-island bounding rects.
+   ──────────────────────────────────────────────────────────────── */
+.pill {
+  pointer-events: auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 100%;
-}
-
-.logo {
-  font-family: var(--font-mono);
-  font-size: var(--text-lg);
-  font-weight: 700;
-  color: var(--text-primary);
-  text-decoration: none;
-  letter-spacing: -0.02em;
-  transition: color var(--t-fast);
-}
-
-.logo:hover { color: var(--neon-teal); }
-
-.logoSlash { color: var(--neon-teal); }
-
-.nav {
-  display: flex;
+  /* Full-width bar */
+  width: 100%;
+  max-width: var(--max-w);
+  height: var(--header-h);
+  padding: 0 var(--pad-x);
   gap: var(--sp-8);
 }
 
+/* Compact floating island */
+.pillScrolled {
+  width: auto;
+  max-width: none;
+  height: 48px;
+  /* More generous padding → wider pill */
+  padding: 4px 10px 4px 22px;
+  margin-top: 14px;
+  border-radius: var(--r-full);
+  gap: var(--sp-3);
+  background: rgba(10, 10, 16, 0.88);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(0, 212, 255, 0.14);
+  box-shadow:
+    0 8px 40px rgba(0, 0, 0, 0.55),
+    0 0 0 0.5px rgba(255, 255, 255, 0.04) inset,
+    0 0 24px rgba(0, 212, 255, 0.06);
+}
+
+/* ── Left group ───────────────────────────────────────────────── */
+.leftGroup {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-5);
+  flex-shrink: 0;
+}
+
+/* "Available for projects" — collapses via max-width on scroll */
+.available {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--neon-teal);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 180px;
+  opacity: 1;
+  transition:
+    max-width 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity   0.2s  ease;
+}
+
+.availableGone {
+  max-width: 0;
+  opacity: 0;
+}
+
+.availableDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--neon-teal);
+  box-shadow: 0 0 6px var(--neon-teal);
+  flex-shrink: 0;
+  animation: pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1;    box-shadow: 0 0 6px var(--neon-teal);  }
+  50%       { opacity: 0.5; box-shadow: 0 0 12px var(--neon-teal); }
+}
+
+/* ── Logo ─────────────────────────────────────────────────────── */
+.logo {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  /* Same padding as nav links — makes the glass pill the same size */
+  padding: 6px 16px;
+  border-radius: var(--r-full);
+  font-family: var(--font-mono);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-decoration: none;
+  letter-spacing: -0.02em;
+  flex-shrink: 0;
+  transition: color var(--t-fast);
+}
+
+.logo:hover  { color: var(--text-primary); }
+.logoActive  { color: var(--text-primary); }
+.logoSlash   { color: var(--neon-teal); }
+
+/* ── Nav ──────────────────────────────────────────────────────── */
+.nav {
+  display: flex;
+  gap: var(--sp-2);  /* small gap — navLink has its own padding for hit area */
+}
+
+.pillScrolled .nav {
+  gap: var(--sp-1);
+}
+
+/* Nav link — wraps text + glass indicator */
 .navLink {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* Generous padding creates a larger hit area and room for the indicator */
+  padding: 6px 16px;
+  border-radius: var(--r-full);
   font-size: var(--text-sm);
   font-weight: 500;
   color: var(--text-secondary);
   text-decoration: none;
   text-transform: uppercase;
   letter-spacing: 0.1em;
+  white-space: nowrap;
   transition: color var(--t-fast);
+}
+
+.navLink:hover { color: var(--text-primary); }
+
+/* Active state — text goes bright */
+.navLinkActive { color: var(--text-primary); }
+
+/* Text sits above the indicator */
+.navLinkText {
   position: relative;
+  z-index: 1;
 }
 
-.navLink::after {
-  content: '';
+/* Glass pill that slides between active nav items (framer-motion layoutId) */
+.navIndicator {
   position: absolute;
-  bottom: -3px;
-  left: 0;
-  width: 0;
-  height: 1px;
-  background: var(--neon-teal);
-  transition: width var(--t-normal);
-  box-shadow: 0 0 6px var(--neon-teal);
+  inset: 0;
+  border-radius: var(--r-full);
+  /* Frosted glass */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  /* Gradient simulates light refraction on glass */
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.10) 0%,
+    rgba(0, 212, 255, 0.07) 60%,
+    rgba(255, 255, 255, 0.04) 100%
+  );
+  /* Outer border: bright top-left edge (glass highlight) */
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow:
+    /* Inner teal glow */
+    0 0 0 1px rgba(0, 212, 255, 0.18) inset,
+    /* Soft top highlight — glass reflection */
+    0 1px 0 rgba(255, 255, 255, 0.18) inset,
+    /* Ambient neon glow outside */
+    0 0 18px rgba(0, 212, 255, 0.12),
+    0 2px 10px rgba(0, 0, 0, 0.25);
+  /* framer-motion animates position — no CSS transition here */
 }
 
-.navLink:hover { color: var(--neon-teal); }
-.navLink:hover::after { width: 100%; }
-
+/* ── GitHub button ────────────────────────────────────────────── */
 .ctaBtn {
+  display: inline-flex;
+  align-items: center;
   font-size: var(--text-sm);
   font-weight: 600;
   color: var(--neon-teal);
   border: 1px solid var(--border-glow);
-  border-radius: var(--r-md);
-  padding: var(--sp-2) var(--sp-5);
+  border-radius: var(--r-full);
+  padding: 8px 20px;
   text-decoration: none;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  transition: background var(--t-fast), box-shadow var(--t-fast), color var(--t-fast);
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition:
+    background var(--t-fast),
+    box-shadow  var(--t-fast),
+    color       var(--t-fast);
 }
 
 .ctaBtn:hover {
@@ -90,6 +216,8 @@
   color: #fff;
 }
 
+/* ── Responsive ───────────────────────────────────────────────── */
 @media (max-width: 768px) {
-  .nav { display: none; }
+  .nav       { display: none; }
+  .available { display: none; }
 }

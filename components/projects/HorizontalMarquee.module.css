@@ -1,3 +1,4 @@
+/* ── Section ─────────────────────────────────────────────────────── */
 .marqueeSection {
   position: relative;
   background: var(--bg-void);
@@ -10,18 +11,20 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: center;
-  gap: var(--sp-6);
 }
 
+/* ── Header ──────────────────────────────────────────────────────── */
 .sectionHeader {
   position: absolute;
   top: var(--sp-10);
   left: 50%;
   transform: translateX(-50%);
   text-align: center;
-  z-index: 2;
+  z-index: 20;
   pointer-events: none;
+  white-space: nowrap;
 }
 
 .sectionLabel {
@@ -37,45 +40,267 @@
   font-size: clamp(var(--text-3xl), 5vw, var(--text-6xl));
   font-weight: 700;
   color: var(--text-primary);
+  letter-spacing: -0.02em;
 }
 
-.row {
+/* ── Coverflow track ─────────────────────────────────────────────── */
+.windowTrack {
+  position: relative;
+  width: 100%;
+  height: 580px;
   display: flex;
-  gap: var(--sp-6);
-  will-change: transform;
-  padding: 0 var(--sp-6);
+  align-items: center;
+  justify-content: center;
 }
 
-.rowTop {
-}
-
-.rowBottom {
-}
-
-.cardWrap {
-  flex-shrink: 0;
-  width: 360px;
-}
-
-.scrollSpacer {
-  height: 0;
-}
-
-.progressBar {
+.windowCard {
   position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: rgba(255, 255, 255, 0.08);
-  z-index: 10;
+  width: 680px;
+  /* Center by default — framer-motion x is additive on top */
+  left: 50%;
+  margin-left: -340px;
+  transform-origin: center center;
 }
 
-.progressFill {
+/* ── MacBook window chrome ───────────────────────────────────────── */
+.macWindow {
+  border-radius: 10px;
+  overflow: hidden;
+  background: #141416;
+  box-shadow:
+    0 0 0 0.5px rgba(255, 255, 255, 0.10),
+    0 40px 100px rgba(0, 0, 0, 0.8),
+    0 8px 30px rgba(0, 0, 0, 0.5);
+}
+
+/* Title bar */
+.titleBar {
+  height: 40px;
+  background: #252529;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  position: relative;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  flex-shrink: 0;
+}
+
+.trafficLights {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: block;
+  flex-shrink: 0;
+}
+
+.dotRed    { background: #FF5F57; }
+.dotYellow { background: #FEBC2E; }
+.dotGreen  { background: #28C840; }
+
+.windowTitle {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.38);
+  letter-spacing: 0.04em;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+/* URL bar */
+.urlBar {
+  height: 36px;
+  background: #1c1c1f;
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.urlInput {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(255, 255, 255, 0.07);
+  border-radius: 6px;
+  padding: 5px 12px;
+  width: 320px;
+  margin: 0 auto;
+}
+
+.urlLock {
+  color: rgba(255, 255, 255, 0.5);
+  flex-shrink: 0;
+  display: block;
+}
+
+.urlText {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.45);
+  letter-spacing: 0.02em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Screenshot */
+.screenshotWrap {
+  width: 100%;
+  height: 290px;
+  overflow: hidden;
+  background: #0e0e10;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.screenshot {
+  width: 100%;
   height: 100%;
-  width: 0;
+  object-fit: cover;
+  display: block;
+}
+
+/* Info footer */
+.windowBody {
+  padding: 20px 28px 24px;
+}
+
+.projectMeta {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-3);
+}
+
+.projectYear {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--neon-teal);
+  letter-spacing: 0.12em;
+}
+
+.projectCategory {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.projectTitle {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin-bottom: var(--sp-2);
+}
+
+.projectDesc {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  line-height: 1.65;
+  margin-bottom: var(--sp-4);
+  max-width: 580px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.techStack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: var(--sp-5);
+}
+
+.techBadge {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--neon-teal);
+  background: rgba(0, 212, 255, 0.08);
+  border: 1px solid rgba(0, 212, 255, 0.18);
+  border-radius: 4px;
+  padding: 2px 8px;
+  letter-spacing: 0.05em;
+}
+
+.projectLinks {
+  display: flex;
+  gap: var(--sp-3);
+}
+
+.linkBtn {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 20px;
   background: var(--neon-teal);
-  box-shadow: 0 0 8px var(--neon-teal), 0 0 16px rgba(0, 212, 255, 0.4);
-  border-radius: 0 2px 2px 0;
-  transition: none;
+  color: var(--text-on-neon);
+  border-radius: var(--r-sm);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: box-shadow var(--t-fast), transform var(--t-fast);
+}
+
+.linkBtn:hover {
+  box-shadow: var(--shadow-neon);
+  transform: translateY(-1px);
+}
+
+.linkBtnGhost {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 20px;
+  border: 1px solid var(--border-glow);
+  color: var(--neon-teal);
+  border-radius: var(--r-sm);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: background var(--t-fast);
+}
+
+.linkBtnGhost:hover {
+  background: var(--neon-teal-dim);
+}
+
+/* ── Nav dots ────────────────────────────────────────────────────── */
+.navDots {
+  position: absolute;
+  bottom: var(--sp-8);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.navDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.18);
+  transition: background var(--t-fast), transform var(--t-fast), box-shadow var(--t-fast);
+}
+
+.navDotActive {
+  background: var(--neon-teal);
+  box-shadow: 0 0 6px var(--neon-teal);
+  transform: scale(1.4);
 }

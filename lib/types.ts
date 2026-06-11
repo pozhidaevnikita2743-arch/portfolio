@@ -7,6 +7,7 @@ export interface Project {
   githubBase: string
   live?: string
   image?: string
+  previewPosition?: string   // CSS object-position, default 'top'
   featured?: boolean
   year: number
   category: ProjectCategory

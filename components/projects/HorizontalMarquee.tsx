@@ -1,83 +1,62 @@
 'use client'
-import { useRef, useEffect } from 'react'
-import ProjectCard from '@/components/ProjectCard'
+import { useRef, useEffect, useState } from 'react'
+import {
+  motion,
+  useMotionValue,
+  useSpring,
+  useTransform,
+  type MotionValue,
+} from 'framer-motion'
 import { Project } from '@/lib/types'
 import s from './HorizontalMarquee.module.css'
 
-interface HorizontalMarqueeProps {
-  projects: Project[]
-}
+interface Props { projects: Project[] }
 
-const CARD_WIDTH = 360
+// px of scroll to advance 1 card
+const SCROLL_PER_CARD = 320
+// px between card centers (coverflow spacing)
+const CARD_SPACING    = 500
+// spring config — smooth but responsive
+const SPRING = { stiffness: 120, damping: 20, mass: 0.6 }
 
-export default function HorizontalMarquee({ projects }: HorizontalMarqueeProps) {
-  const MAX_SCROLL = projects.length * CARD_WIDTH / 2
+export default function HorizontalMarquee({ projects }: Props) {
+  const sectionRef  = useRef<HTMLElement>(null)
+  const rawProgress = useMotionValue(0)                   // 0 … N-1, set imperatively
+  const progress    = useSpring(rawProgress, SPRING)      // spring-smoothed version
+  const [activeDot, setActiveDot] = useState(0)
 
-  const accumulatedRef   = useRef(0)
-  const offsetTopRef     = useRef(0)
-  const offsetBottomRef  = useRef(0)
-  const progressRef      = useRef(0)
-  const rafRef           = useRef<number | undefined>(undefined)
+  const MAX_PROGRESS = projects.length - 1
 
-  const topRowRef        = useRef<HTMLDivElement>(null)
-  const bottomRowRef     = useRef<HTMLDivElement>(null)
-  const progressFillRef  = useRef<HTMLDivElement>(null)
-  const sectionRef       = useRef<HTMLElement>(null)
-
-  const tripled = [...projects, ...projects, ...projects]
-
+  // Wheel hijack
   useEffect(() => {
     const section = sectionRef.current
     if (!section) return
 
-    function applyTransforms() {
-      if (topRowRef.current) {
-        topRowRef.current.style.transform = `translateX(${offsetTopRef.current}px)`
-      }
-      if (bottomRowRef.current) {
-        bottomRowRef.current.style.transform = `translateX(${offsetBottomRef.current}px)`
-      }
-      if (progressFillRef.current) {
-        progressFillRef.current.style.width = `${progressRef.current * 100}%`
-      }
-    }
-
     function handleWheel(e: WheelEvent) {
       const rect = section!.getBoundingClientRect()
-      // Only hijack when the section is in the viewport
       if (rect.top > 0 || rect.bottom < window.innerHeight) return
 
-      if (accumulatedRef.current >= MAX_SCROLL) {
-        // Max scroll reached — let the page scroll normally
-        return
-      }
+      const cur = rawProgress.get()
+      if (cur >= MAX_PROGRESS && e.deltaY > 0) return
+      if (cur <= 0            && e.deltaY < 0) return
 
       e.preventDefault()
-
-      accumulatedRef.current = Math.min(
-        accumulatedRef.current + Math.abs(e.deltaY),
-        MAX_SCROLL
+      rawProgress.set(
+        Math.min(Math.max(cur + e.deltaY / SCROLL_PER_CARD, 0), MAX_PROGRESS)
       )
-
-      offsetTopRef.current    += e.deltaY * 0.6
-      offsetBottomRef.current -= e.deltaY * 0.6
-      progressRef.current = accumulatedRef.current / MAX_SCROLL
-
-      if (rafRef.current !== undefined) {
-        cancelAnimationFrame(rafRef.current)
-      }
-      rafRef.current = requestAnimationFrame(applyTransforms)
     }
 
     window.addEventListener('wheel', handleWheel, { passive: false })
+    return () => window.removeEventListener('wheel', handleWheel)
+  }, [MAX_PROGRESS, rawProgress])
 
-    return () => {
-      window.removeEventListener('wheel', handleWheel)
-      if (rafRef.current !== undefined) {
-        cancelAnimationFrame(rafRef.current)
-      }
-    }
-  }, [MAX_SCROLL])
+  // Sync nav dots (React state) from spring value
+  useEffect(() => {
+    const unsub = progress.on('change', v => {
+      setActiveDot(Math.round(Math.min(Math.max(v, 0), MAX_PROGRESS)))
+    })
+    return unsub
+  }, [progress, MAX_PROGRESS])
 
   return (
     <section ref={sectionRef} className={s.marqueeSection} id="projects">
@@ -87,39 +66,153 @@ export default function HorizontalMarquee({ projects }: HorizontalMarqueeProps) 
           <h2 className={s.sectionTitle}>Projects</h2>
         </header>
 
-        <div ref={topRowRef} className={`${s.row} ${s.rowTop}`}>
-          {tripled.map((project, i) => (
-            <div key={`top-${i}`} className={s.cardWrap}>
-              <ProjectCard
-                project={project}
-                index={i % projects.length}
-                inView={true}
-              />
-            </div>
+        <div className={s.windowTrack}>
+          {projects.map((project, i) => (
+            <CardSlot key={project.id} index={i} progress={progress}>
+              <MacWindow project={project} />
+            </CardSlot>
           ))}
         </div>
 
-        <div ref={bottomRowRef} className={`${s.row} ${s.rowBottom}`}>
-          {tripled.map((project, i) => (
-            <div key={`bottom-${i}`} className={s.cardWrap}>
-              <ProjectCard
-                project={project}
-                index={i % projects.length}
-                inView={true}
-              />
-            </div>
+        <div className={s.navDots}>
+          {projects.map((_, i) => (
+            <div
+              key={i}
+              className={`${s.navDot} ${i === activeDot ? s.navDotActive : ''}`}
+            />
           ))}
-        </div>
-
-        <div className={s.progressBar}>
-          <div ref={progressFillRef} className={s.progressFill} />
         </div>
       </div>
 
-      <div
-        className={s.scrollSpacer}
-        style={{ height: MAX_SCROLL + 'px' }}
-      />
+      {/* Scroll spacer — keeps section sticky during hijack + quick exit after last card */}
+      <div style={{ height: '480px' }} />
     </section>
+  )
+}
+
+// ── Card slot ─────────────────────────────────────────────────────
+// Derives x / scale / opacity / filter from shared spring progress value.
+// No React re-renders — all animation is pure motion values.
+
+interface SlotProps {
+  index:    number
+  progress: MotionValue<number>
+  children: React.ReactNode
+}
+
+function CardSlot({ index, progress, children }: SlotProps) {
+  const x = useTransform(progress, p => (index - p) * CARD_SPACING)
+
+  const scale = useTransform(progress, p => {
+    const d = Math.abs(index - p)
+    if (d <= 1) return 1 - d * 0.28
+    return Math.max(1 - d * 0.28, 0.55)
+  })
+
+  const opacity = useTransform(progress, p => {
+    const d = Math.abs(index - p)
+    if (d <= 1)  return 1 - d * 0.35
+    if (d <= 1.8) return (1.8 - d) / 0.8 * 0.65
+    return 0
+  })
+
+  const filter = useTransform(progress, p => {
+    const d = Math.abs(index - p)
+    const b = d <= 1 ? 1 - d * 0.45 : 0.3
+    return `brightness(${b.toFixed(3)})`
+  })
+
+  const zIndex = useTransform(progress, p =>
+    Math.round(20 - Math.abs(index - p) * 5)
+  )
+
+  return (
+    <motion.div
+      className={s.windowCard}
+      style={{ x, scale, opacity, filter, zIndex }}
+    >
+      {children}
+    </motion.div>
+  )
+}
+
+// ── MacBook window ────────────────────────────────────────────────
+
+function MacWindow({ project }: { project: Project }) {
+  const displayUrl = project.live
+    ? project.live.replace(/^https?:\/\//, '').replace(/\/$/, '')
+    : `github.com/${project.githubBase}`
+
+  return (
+    <div className={s.macWindow}>
+      {/* Title bar */}
+      <div className={s.titleBar}>
+        <div className={s.trafficLights}>
+          <span className={`${s.dot} ${s.dotRed}`}    />
+          <span className={`${s.dot} ${s.dotYellow}`} />
+          <span className={`${s.dot} ${s.dotGreen}`}  />
+        </div>
+        <span className={s.windowTitle}>{project.title}</span>
+      </div>
+
+      {/* URL bar */}
+      <div className={s.urlBar}>
+        <div className={s.urlInput}>
+          <LockIcon />
+          <span className={s.urlText}>{displayUrl}</span>
+        </div>
+      </div>
+
+      {/* Screenshot — main visual */}
+      <div className={s.screenshotWrap}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={project.image ?? ''}
+          alt={project.title}
+          className={s.screenshot}
+          style={{ objectPosition: project.previewPosition ?? 'top' }}
+        />
+      </div>
+
+      {/* Info */}
+      <div className={s.windowBody}>
+        <div className={s.projectMeta}>
+          <span className={s.projectYear}>{project.year}</span>
+          <span className={s.projectCategory}>{project.category}</span>
+        </div>
+        <h3 className={s.projectTitle}>{project.title}</h3>
+        <p className={s.projectDesc}>{project.description}</p>
+        <div className={s.techStack}>
+          {project.tech.map(t => <span key={t} className={s.techBadge}>{t}</span>)}
+        </div>
+        <div className={s.projectLinks}>
+          {project.live && (
+            <a href={project.live} target="_blank" rel="noopener noreferrer" className={s.linkBtn}>
+              Live ↗
+            </a>
+          )}
+          {project.github && (
+            <a
+              href={`${project.githubBase}/${project.github}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={s.linkBtnGhost}
+            >
+              GitHub ↗
+            </a>
+          )}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function LockIcon() {
+  return (
+    <svg width="10" height="12" viewBox="0 0 10 12" fill="none" className={s.urlLock}>
+      <rect x="1" y="5" width="8" height="7" rx="1.5" fill="currentColor" opacity="0.4" />
+      <path d="M3 5V3.5a2 2 0 114 0V5" stroke="currentColor" strokeWidth="1.3"
+            opacity="0.4" strokeLinecap="round" />
+    </svg>
   )
 }

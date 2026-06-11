@@ -39,3 +39,15 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+.vercel
+
+# other projects accidentally in this directory
+Diplom consalt/
+oaklet-store/
+oaklet-v1-deploy/
+oaklet-v2/
+Oaklet правки/
+scripts/
+*.zip
+фото*
