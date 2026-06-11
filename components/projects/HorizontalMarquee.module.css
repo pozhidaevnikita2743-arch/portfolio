@@ -1,0 +1,81 @@
+.marqueeSection {
+  position: relative;
+  background: var(--bg-void);
+}
+
+.stickyViewport {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--sp-6);
+}
+
+.sectionHeader {
+  position: absolute;
+  top: var(--sp-10);
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.sectionLabel {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--neon-teal);
+  letter-spacing: 0.1em;
+  margin-bottom: var(--sp-2);
+}
+
+.sectionTitle {
+  font-family: var(--font-display);
+  font-size: clamp(var(--text-3xl), 5vw, var(--text-6xl));
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.row {
+  display: flex;
+  gap: var(--sp-6);
+  will-change: transform;
+  padding: 0 var(--sp-6);
+}
+
+.rowTop {
+}
+
+.rowBottom {
+}
+
+.cardWrap {
+  flex-shrink: 0;
+  width: 360px;
+}
+
+.scrollSpacer {
+  height: 0;
+}
+
+.progressBar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.08);
+  z-index: 10;
+}
+
+.progressFill {
+  height: 100%;
+  width: 0;
+  background: var(--neon-teal);
+  box-shadow: 0 0 8px var(--neon-teal), 0 0 16px rgba(0, 212, 255, 0.4);
+  border-radius: 0 2px 2px 0;
+  transition: none;
+}
