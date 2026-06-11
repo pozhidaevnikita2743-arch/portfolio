@@ -30,5 +30,5 @@
     ".next/dev/types/**/*.ts",
     "**/*.mts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "Diplom consalt", "Oaklet правки", "oaklet-store", "oaklet-v1-deploy", "oaklet-v2", "scripts"]
 }
