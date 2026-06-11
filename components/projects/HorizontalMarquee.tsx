@@ -21,6 +21,7 @@ const SPRING = { stiffness: 120, damping: 20, mass: 0.6 }
 
 export default function HorizontalMarquee({ projects }: Props) {
   const sectionRef  = useRef<HTMLElement>(null)
+  const trackRef    = useRef<HTMLDivElement>(null)
   const rawProgress = useMotionValue(0)                   // 0 … N-1, set imperatively
   const progress    = useSpring(rawProgress, SPRING)      // spring-smoothed version
   const [activeDot, setActiveDot] = useState(0)
@@ -50,13 +51,31 @@ export default function HorizontalMarquee({ projects }: Props) {
     return () => window.removeEventListener('wheel', handleWheel)
   }, [MAX_PROGRESS, rawProgress])
 
-  // Sync nav dots (React state) from spring value
+  // Desktop: sync nav dots from spring progress value
   useEffect(() => {
     const unsub = progress.on('change', v => {
       setActiveDot(Math.round(Math.min(Math.max(v, 0), MAX_PROGRESS)))
     })
     return unsub
   }, [progress, MAX_PROGRESS])
+
+  // Mobile: sync nav dots from native scroll position.
+  // Uses scrollLeft percentage — avoids offsetLeft issues with positioned children.
+  useEffect(() => {
+    const track = trackRef.current
+    if (!track) return
+
+    const onScroll = () => {
+      const { scrollLeft, scrollWidth, clientWidth } = track
+      const maxScroll = scrollWidth - clientWidth
+      if (maxScroll <= 0) return
+      const idx = Math.round((scrollLeft / maxScroll) * (projects.length - 1))
+      setActiveDot(Math.max(0, Math.min(idx, projects.length - 1)))
+    }
+
+    track.addEventListener('scroll', onScroll, { passive: true })
+    return () => track.removeEventListener('scroll', onScroll)
+  }, [projects.length])
 
   return (
     <section ref={sectionRef} className={s.marqueeSection} id="projects">
@@ -66,7 +85,7 @@ export default function HorizontalMarquee({ projects }: Props) {
           <h2 className={s.sectionTitle}>Projects</h2>
         </header>
 
-        <div className={s.windowTrack}>
+        <div className={s.windowTrack} ref={trackRef}>
           {projects.map((project, i) => (
             <CardSlot key={project.id} index={i} progress={progress}>
               <MacWindow project={project} />
@@ -85,7 +104,7 @@ export default function HorizontalMarquee({ projects }: Props) {
       </div>
 
       {/* Scroll spacer — keeps section sticky during hijack + quick exit after last card */}
-      <div style={{ height: '480px' }} />
+      <div className={s.scrollSpacer} />
     </section>
   )
 }
