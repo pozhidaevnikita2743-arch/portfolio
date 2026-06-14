@@ -1,6 +1,6 @@
 'use client'
 import Navbar from '@/components/Navbar'
-import HeroFigure from '@/components/HeroFigure'
+import HeroFigure from '@/components/HeroSprite'
 import CursorGlow from '@/components/CursorGlow'
 import SectionReveal from '@/components/SectionReveal'
 import SkillBadge from '@/components/SkillBadge'
