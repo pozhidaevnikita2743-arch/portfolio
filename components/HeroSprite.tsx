@@ -37,6 +37,8 @@ export default function HeroSprite() {
       canvas!.width  = W * dpr
       canvas!.height = H * dpr
       ctx.scale(dpr, dpr)
+      ctx.imageSmoothingEnabled = true
+      ctx.imageSmoothingQuality = 'high'
     }
 
     function drawFrame(t: number) {
