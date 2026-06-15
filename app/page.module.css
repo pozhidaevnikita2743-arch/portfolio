@@ -294,36 +294,37 @@
   gap: var(--sp-6) var(--sp-12);
 }
 
-/* ── Contact ────────────────────────────────────────────────────── */
-.contact {
-  padding: var(--sp-24) 0 var(--sp-32);
-  background: var(--bg-void);
-  position: relative;
-  overflow: hidden;
-}
-
-.contact::before {
+/* ── Skills → Contact transition ────────────────────────────────── */
+.skillsSection::after {
   content: '';
   position: absolute;
-  top: -80px; left: 0; right: 0;
-  height: 80px;
-  background: linear-gradient(to bottom, var(--bg-elevated), var(--bg-void));
+  bottom: 0; left: 0; right: 0;
+  height: 140px;
+  background: linear-gradient(to bottom, transparent, var(--bg-void));
   pointer-events: none;
+  z-index: 1;
+}
+
+/* ── Contact ────────────────────────────────────────────────────── */
+.contact {
+  padding: var(--sp-32) 0 var(--sp-40);
+  background: var(--bg-void);
+  position: relative;
 }
 
 .contact::after {
   content: '';
   position: absolute;
-  top: 20%;
+  top: 10%;
   left: 50%;
   transform: translateX(-50%);
-  width: 80vw;
-  height: 60vw;
+  width: 90vw;
+  height: 70vw;
   background: radial-gradient(
     ellipse at center,
-    rgba(191, 95, 255, 0.10) 0%,
-    rgba(0, 212, 255, 0.07) 45%,
-    transparent 70%
+    rgba(191, 95, 255, 0.09) 0%,
+    rgba(0, 212, 255, 0.06) 45%,
+    transparent 68%
   );
   pointer-events: none;
   z-index: 0;
@@ -339,7 +340,7 @@
   font-size: var(--text-lg);
   color: var(--text-secondary);
   max-width: 520px;
-  margin: 0 auto var(--sp-14);
+  margin: 0 auto var(--sp-16);
   line-height: 1.75;
 }
 
@@ -347,51 +348,49 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: var(--sp-5);
-  max-width: 860px;
-  margin-inline: auto;
   text-align: left;
 }
 
 .contactCard {
   display: flex;
   flex-direction: column;
-  gap: var(--sp-3);
-  padding: var(--sp-8) var(--sp-7) var(--sp-7);
-  background: rgba(13, 13, 26, 0.7);
+  gap: var(--sp-4);
+  padding: var(--sp-10) var(--sp-8) var(--sp-9);
+  background: rgba(13, 13, 26, 0.6);
   border: 1px solid rgba(255, 255, 255, 0.07);
   border-radius: var(--r-xl);
   text-decoration: none;
   color: var(--text-primary);
+  min-height: 240px;
   transition:
     border-color 0.28s ease,
     box-shadow 0.28s ease,
     transform 0.28s ease,
     background 0.28s ease;
-  backdrop-filter: blur(8px);
 }
 
 .contactCard:hover {
   border-color: rgba(0, 212, 255, 0.28);
-  box-shadow: 0 0 40px rgba(0, 212, 255, 0.07), 0 12px 40px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 40px rgba(0, 212, 255, 0.07), 0 16px 48px rgba(0, 0, 0, 0.5);
   background: rgba(0, 212, 255, 0.03);
-  transform: translateY(-5px);
+  transform: translateY(-6px);
 }
 
 .contactCardIcon {
-  width: 48px;
-  height: 48px;
+  width: 52px;
+  height: 52px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: rgba(0, 212, 255, 0.08);
   border-radius: var(--r-lg);
   color: var(--neon-teal);
-  margin-bottom: var(--sp-2);
+  margin-bottom: var(--sp-3);
   transition: background 0.28s ease;
 }
 
 .contactCard:hover .contactCardIcon {
-  background: rgba(0, 212, 255, 0.14);
+  background: rgba(0, 212, 255, 0.15);
 }
 
 .contactCardPlatform {
@@ -403,7 +402,7 @@
 }
 
 .contactCardHandle {
-  font-size: var(--text-sm);
+  font-size: var(--text-base);
   color: var(--text-primary);
   font-weight: 500;
   overflow-wrap: break-word;
@@ -420,7 +419,7 @@
 
 .contactCard:hover .contactCardArrow {
   color: var(--neon-teal);
-  transform: translateX(5px);
+  transform: translateX(6px);
 }
 
 /* ── Footer ─────────────────────────────────────────────────────── */
@@ -458,8 +457,8 @@
   /* About: reduce vertical padding */
   .about { padding: var(--sp-16) 0; }
 
-  /* Skills/Contact: reduce padding */
   .skillsSection { padding: var(--sp-16) 0; }
-  .contact       { padding: var(--sp-16) 0 var(--sp-24); }
+  .contact       { padding: var(--sp-20) 0 var(--sp-28); }
   .contactCards  { grid-template-columns: 1fr; }
+  .contactCard   { min-height: auto; }
 }
