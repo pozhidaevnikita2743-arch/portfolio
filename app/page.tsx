@@ -112,19 +112,31 @@ export default function Page() {
                   <div className={s.contactCardIcon}><IconEmail /></div>
                   <div className={s.contactCardPlatform}>Email</div>
                   <div className={s.contactCardHandle}>nftcollector2743@gmail.com</div>
-                  <div className={s.contactCardArrow}>→</div>
+                  <div className={s.contactCardDesc}>Project inquiries, proposals and briefs. Preferred for detailed discussions.</div>
+                  <div className={s.contactCardFooter}>
+                    <span className={s.contactCardMeta}>Reply within 24h</span>
+                    <span className={s.contactCardArrow}>→</span>
+                  </div>
                 </a>
                 <a href="https://t.me/soleth_2743" target="_blank" rel="noopener noreferrer" className={s.contactCard}>
                   <div className={s.contactCardIcon}><IconTelegram /></div>
                   <div className={s.contactCardPlatform}>Telegram</div>
                   <div className={s.contactCardHandle}>@soleth_2743</div>
-                  <div className={s.contactCardArrow}>→</div>
+                  <div className={s.contactCardDesc}>Quick questions, project chat and calls. Fastest way to reach me.</div>
+                  <div className={s.contactCardFooter}>
+                    <span className={s.contactCardMeta}>Usually online</span>
+                    <span className={s.contactCardArrow}>→</span>
+                  </div>
                 </a>
                 <a href="https://github.com/pozhidaevnikita2743-arch" target="_blank" rel="noopener noreferrer" className={s.contactCard}>
                   <div className={s.contactCardIcon}><IconGitHub /></div>
                   <div className={s.contactCardPlatform}>GitHub</div>
                   <div className={s.contactCardHandle}>pozhidaevnikita2743-arch</div>
-                  <div className={s.contactCardArrow}>→</div>
+                  <div className={s.contactCardDesc}>Portfolio projects, open source contributions and code samples.</div>
+                  <div className={s.contactCardFooter}>
+                    <span className={s.contactCardMeta}>View profile</span>
+                    <span className={s.contactCardArrow}>→</span>
+                  </div>
                 </a>
               </div>
             </div>

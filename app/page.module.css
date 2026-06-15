@@ -422,11 +422,38 @@
   font-weight: 500;
   overflow-wrap: break-word;
   word-break: break-all;
+}
+
+.contactCardDesc {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  line-height: 1.6;
   flex: 1;
 }
 
+.contactCardFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: var(--sp-4);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  margin-top: var(--sp-2);
+}
+
+.contactCardMeta {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+  transition: color 0.25s ease;
+}
+
+.contactCard:hover .contactCardMeta {
+  color: var(--neon-teal);
+}
+
 .contactCardArrow {
-  font-size: var(--text-xl);
+  font-size: var(--text-lg);
   color: var(--text-muted);
   transition: color 0.25s ease, transform 0.25s ease;
   line-height: 1;
@@ -434,7 +461,7 @@
 
 .contactCard:hover .contactCardArrow {
   color: var(--neon-teal);
-  transform: translateX(6px);
+  transform: translateX(5px);
 }
 
 /* ── Footer ─────────────────────────────────────────────────────── */
