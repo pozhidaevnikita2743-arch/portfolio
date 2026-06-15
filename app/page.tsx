@@ -100,28 +100,33 @@ export default function Page() {
       <SectionReveal>
         <section className={s.contact} id="contact">
           <div className="container">
-            <div className={s.sectionLabel}>// contact</div>
-            <h2 className={s.sectionTitle}>Let&apos;s Work Together</h2>
-            <p className={s.contactText}>
-              Open for freelance projects and collaborations.
-            </p>
-            <div className={s.contactLinks}>
-              <a
-                href="https://github.com/pozhidaevnikita2743-arch"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={s.contactLink}
-              >
-                <IconGitHub />
-                GitHub
-              </a>
-              <a
-                href="https://t.me/soleth_2743"
-                className={s.contactLink}
-              >
-                <IconTelegram />
-                Telegram
-              </a>
+            <div className={s.contactInner}>
+              <div className={s.sectionLabel}>// contact</div>
+              <h2 className={s.sectionTitle}>Let&apos;s Work Together</h2>
+              <p className={s.contactText}>
+                Open for freelance projects and long-term collaborations.
+                Fast response, clear communication, quality delivery.
+              </p>
+              <div className={s.contactCards}>
+                <a href="mailto:nftcollector2743@gmail.com" className={s.contactCard}>
+                  <div className={s.contactCardIcon}><IconEmail /></div>
+                  <div className={s.contactCardPlatform}>Email</div>
+                  <div className={s.contactCardHandle}>nftcollector2743@gmail.com</div>
+                  <div className={s.contactCardArrow}>→</div>
+                </a>
+                <a href="https://t.me/soleth_2743" target="_blank" rel="noopener noreferrer" className={s.contactCard}>
+                  <div className={s.contactCardIcon}><IconTelegram /></div>
+                  <div className={s.contactCardPlatform}>Telegram</div>
+                  <div className={s.contactCardHandle}>@soleth_2743</div>
+                  <div className={s.contactCardArrow}>→</div>
+                </a>
+                <a href="https://github.com/pozhidaevnikita2743-arch" target="_blank" rel="noopener noreferrer" className={s.contactCard}>
+                  <div className={s.contactCardIcon}><IconGitHub /></div>
+                  <div className={s.contactCardPlatform}>GitHub</div>
+                  <div className={s.contactCardHandle}>pozhidaevnikita2743-arch</div>
+                  <div className={s.contactCardArrow}>→</div>
+                </a>
+              </div>
             </div>
           </div>
         </section>
@@ -135,6 +140,15 @@ export default function Page() {
         </div>
       </footer>
     </>
+  )
+}
+
+function IconEmail() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="2" y="4" width="20" height="16" rx="2" />
+      <path d="m2 7 10 7 10-7" />
+    </svg>
   )
 }
 
