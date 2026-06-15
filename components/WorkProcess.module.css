@@ -1,0 +1,154 @@
+.wrapper {
+  padding: var(--sp-16) 0 var(--sp-6);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  margin-top: var(--sp-16);
+}
+
+/* ── Heading ─────────────────────────────────────────────────────── */
+.heading {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-12);
+}
+
+.headingLabel {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--neon-teal);
+  letter-spacing: 0.1em;
+}
+
+.headingTitle {
+  font-family: var(--font-display);
+  font-size: clamp(var(--text-xl), 3vw, var(--text-3xl));
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+/* ── Cable track ─────────────────────────────────────────────────── */
+.trackContainer {
+  position: relative;
+  height: 22px;
+  margin-bottom: var(--sp-5);
+}
+
+.trackBg {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  margin-top: -1px;
+  background: rgba(0, 212, 255, 0.09);
+  border-radius: 1px;
+}
+
+.trackFill {
+  position: absolute;
+  top: 50%;
+  height: 2px;
+  margin-top: -1px;
+  background: linear-gradient(90deg, var(--neon-teal), rgba(191, 95, 255, 0.9));
+  border-radius: 1px;
+  box-shadow: 0 0 8px rgba(0, 212, 255, 0.55);
+  transform-origin: left center;
+}
+
+/* Moving pulse at leading edge */
+.pulse {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow:
+    0 0 6px  var(--neon-teal),
+    0 0 16px var(--neon-teal),
+    0 0 28px rgba(0, 212, 255, 0.45);
+  z-index: 4;
+  pointer-events: none;
+}
+
+/* ── Nodes ───────────────────────────────────────────────────────── */
+.node {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid rgba(0, 212, 255, 0.18);
+  background: var(--bg-elevated);
+  z-index: 3;
+  transition:
+    border-color 0.3s ease,
+    background   0.3s ease,
+    box-shadow   0.3s ease;
+}
+
+.nodeLit {
+  border-color: var(--neon-teal);
+  background: rgba(0, 212, 255, 0.22);
+  box-shadow: 0 0 12px var(--neon-teal), 0 0 4px rgba(0, 212, 255, 0.5) inset;
+}
+
+/* ── Labels ──────────────────────────────────────────────────────── */
+.labelsContainer {
+  position: relative;
+  height: 52px;
+}
+
+.stepLabel {
+  position: absolute;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  text-align: center;
+}
+
+.labelFirst {
+  transform: translateX(0);
+  align-items: flex-start;
+  text-align: left;
+}
+
+.labelLast {
+  transform: translateX(-100%);
+  align-items: flex-end;
+  text-align: right;
+}
+
+.stepName {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.22);
+  white-space: nowrap;
+  transition: color 0.35s ease;
+}
+
+.stepSub {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.14);
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  transition: color 0.35s ease;
+}
+
+.stepLabelLit .stepName { color: var(--text-primary); }
+.stepLabelLit .stepSub  { color: rgba(0, 212, 255, 0.7); }
+
+/* ── Mobile ──────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .stepSub   { display: none; }
+  .stepName  { font-size: 10px; }
+  .wrapper   { padding: var(--sp-12) 0 var(--sp-4); }
+  .labelsContainer { height: 32px; }
+}

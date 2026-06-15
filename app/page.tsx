@@ -5,6 +5,7 @@ import CursorGlow from '@/components/CursorGlow'
 import SectionReveal from '@/components/SectionReveal'
 import SkillBadge from '@/components/SkillBadge'
 import HorizontalMarquee from '@/components/projects/HorizontalMarquee'
+import WorkProcess from '@/components/WorkProcess'
 import { useInView } from '@/lib/hooks/useInView'
 import { projects } from '@/lib/projects'
 import { skills } from '@/lib/skills'
@@ -26,6 +27,7 @@ function SkillsSection() {
             <SkillBadge key={skill.name} skill={skill} index={i} inView={inView} />
           ))}
         </div>
+        <WorkProcess />
       </div>
     </section>
   )
