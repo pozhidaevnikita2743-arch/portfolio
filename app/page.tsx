@@ -86,6 +86,45 @@ export default function Page() {
               web applications — from company landing pages to full e-commerce
               platforms. Everything I ship is custom-coded, no templates, no shortcuts.
             </p>
+
+            <div className={s.aboutStats}>
+              <div className={s.statItem}>
+                <div className={s.statNumber}>3+</div>
+                <div className={s.statLabel}>Years of experience</div>
+              </div>
+              <div className={s.statItem}>
+                <div className={s.statNumber}>15+</div>
+                <div className={s.statLabel}>Projects delivered</div>
+              </div>
+              <div className={s.statItem}>
+                <div className={s.statNumber}>Full-stack</div>
+                <div className={s.statLabel}>Frontend, backend & integrations</div>
+              </div>
+            </div>
+
+            <div className={s.aboutCards}>
+              <div className={s.aboutCard}>
+                <div className={s.aboutCardIcon}><IconFrontend /></div>
+                <div className={s.aboutCardTitle}>Frontend</div>
+                <div className={s.aboutCardDesc}>
+                  React, Next.js, TypeScript — crafted UI with smooth animations and pixel-perfect layouts.
+                </div>
+              </div>
+              <div className={s.aboutCard}>
+                <div className={s.aboutCardIcon}><IconBackend /></div>
+                <div className={s.aboutCardTitle}>Backend</div>
+                <div className={s.aboutCardDesc}>
+                  APIs, databases, server logic — reliable systems built to handle real traffic.
+                </div>
+              </div>
+              <div className={s.aboutCard}>
+                <div className={s.aboutCardIcon}><IconIntegrations /></div>
+                <div className={s.aboutCardTitle}>Integrations</div>
+                <div className={s.aboutCardDesc}>
+                  CRM, chatbots, payment systems and deployment — connecting everything end-to-end.
+                </div>
+              </div>
+            </div>
           </div>
         </section>
       </SectionReveal>
@@ -171,6 +210,33 @@ export default function Page() {
         </div>
       </footer>
     </>
+  )
+}
+
+function IconFrontend() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="2" y="3" width="20" height="14" rx="2" />
+      <path d="M8 21h8M12 17v4" />
+    </svg>
+  )
+}
+
+function IconBackend() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <ellipse cx="12" cy="5" rx="9" ry="3" />
+      <path d="M3 5v6c0 1.66 4.03 3 9 3s9-1.34 9-3V5" />
+      <path d="M3 11v6c0 1.66 4.03 3 9 3s9-1.34 9-3v-6" />
+    </svg>
+  )
+}
+
+function IconIntegrations() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M9 7H6a3 3 0 0 0-3 3v0a3 3 0 0 0 3 3h3M15 7h3a3 3 0 0 1 3 3v0a3 3 0 0 1-3 3h-3M8 10h8" />
+    </svg>
   )
 }
 
