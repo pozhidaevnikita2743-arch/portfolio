@@ -18,48 +18,42 @@ export default function Navbar() {
   // null = hero (logo is active), string = section id
   const [activeSection, setActiveSection] = useState<string | null>(null)
 
-  // Single scroll handler: scrolled flag + active section by scroll position.
-  // IntersectionObserver is unreliable for sticky/tall sections (projects),
-  // so we compare scrollY against each section's offsetTop instead.
+  // `scrolled` flag (compact pill) is a plain scroll listener — cheap, no
+  // layout reads involved.
   useEffect(() => {
-    const handler = () => {
-      const y  = window.scrollY
-      const vh = window.innerHeight
-
-      setScrolled(y > 60)
-
-      // Near the top → hero (logo active)
-      if (y < vh * 0.25) {
-        setActiveSection(null)
-        return
-      }
-
-      // "Active point" = 40% from top of viewport
-      const checkY = y + vh * 0.4
-
-      let found: string | null = null
-      for (const { id } of NAV) {
-        const el = document.getElementById(id)
-        if (!el) continue
-        const top    = el.offsetTop
-        const bottom = top + el.offsetHeight
-        if (checkY >= top && checkY < bottom) {
-          found = id
-          break
-        }
-      }
-      if (found) setActiveSection(found)
-    }
-
+    const handler = () => setScrolled(window.scrollY > 60)
+    handler()
     window.addEventListener('scroll', handler, { passive: true })
-
-    // Custom fonts swap in after first paint (font-display: swap), which
-    // reflows heading text and shifts every section's offsetTop. If the user
-    // scrolls during that window, the calc above briefly lands on the wrong
-    // section. Recompute once fonts finish loading + layout settles.
-    document.fonts?.ready.then(() => requestAnimationFrame(handler))
-
     return () => window.removeEventListener('scroll', handler)
+  }, [])
+
+  // Active section via IntersectionObserver: shrink the root to a thin
+  // horizontal line at 40% from the top of the viewport, then watch which
+  // section currently crosses that line. Unlike reading offsetTop/offsetHeight
+  // by hand, this is recomputed by the browser itself after every layout —
+  // immune to async reflows (font swap, image load, etc.) briefly throwing
+  // the numbers off mid-scroll.
+  useEffect(() => {
+    const ids = ['hero', ...NAV.map(n => n.id)]
+    const els = ids
+      .map(id => document.getElementById(id))
+      .filter((el): el is HTMLElement => el !== null)
+
+    const intersecting = new Map<string, boolean>()
+
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          intersecting.set((entry.target as HTMLElement).id, entry.isIntersecting)
+        })
+        const found = ids.find(id => intersecting.get(id)) ?? null
+        setActiveSection(found && found !== 'hero' ? found : null)
+      },
+      { rootMargin: '-40% 0px -59% 0px', threshold: 0 }
+    )
+
+    els.forEach(el => observer.observe(el))
+    return () => observer.disconnect()
   }, [])
 
   const onHero = activeSection === null
