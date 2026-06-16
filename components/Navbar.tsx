@@ -52,6 +52,13 @@ export default function Navbar() {
     }
 
     window.addEventListener('scroll', handler, { passive: true })
+
+    // Custom fonts swap in after first paint (font-display: swap), which
+    // reflows heading text and shifts every section's offsetTop. If the user
+    // scrolls during that window, the calc above briefly lands on the wrong
+    // section. Recompute once fonts finish loading + layout settles.
+    document.fonts?.ready.then(() => requestAnimationFrame(handler))
+
     return () => window.removeEventListener('scroll', handler)
   }, [])
 
