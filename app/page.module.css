@@ -301,7 +301,7 @@
 }
 
 .aboutCard {
-  padding: var(--sp-9) var(--sp-8);
+  padding: var(--sp-12) var(--sp-10);
   border-radius: var(--r-xl);
   background: rgba(13, 13, 26, 0.5);
   border: 1px solid rgba(255, 255, 255, 0.07);
