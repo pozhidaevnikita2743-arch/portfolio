@@ -1,25 +1,26 @@
 'use client'
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
+import { useLang } from '@/lib/LangContext'
+import { t } from '@/lib/i18n'
 import s from './Navbar.module.css'
 
-const NAV = [
-  { href: '#about',    label: 'About',    id: 'about'    },
-  { href: '#projects', label: 'Projects', id: 'projects' },
-  { href: '#skills',   label: 'Skills',   id: 'skills'   },
-  { href: '#contact',  label: 'Contact',  id: 'contact'  },
-]
-
-// Underdamped spring → slight overshoot = the "bounce" effect
 const INDICATOR = { type: 'spring', stiffness: 280, damping: 18 } as const
 
 export default function Navbar() {
+  const { lang, toggle } = useLang()
+  const tr = t[lang]
+
+  const NAV = [
+    { href: '#about',    label: tr.nav.about,    id: 'about'    },
+    { href: '#projects', label: tr.nav.projects,  id: 'projects' },
+    { href: '#skills',   label: tr.nav.skills,    id: 'skills'   },
+    { href: '#contact',  label: tr.nav.contact,   id: 'contact'  },
+  ]
+
   const [scrolled, setScrolled]           = useState(false)
-  // null = hero (logo is active), string = section id
   const [activeSection, setActiveSection] = useState<string | null>(null)
 
-  // `scrolled` flag (compact pill) is a plain scroll listener — cheap, no
-  // layout reads involved.
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 60)
     handler()
@@ -27,12 +28,6 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handler)
   }, [])
 
-  // Active section via IntersectionObserver: shrink the root to a thin
-  // horizontal line at 40% from the top of the viewport, then watch which
-  // section currently crosses that line. Unlike reading offsetTop/offsetHeight
-  // by hand, this is recomputed by the browser itself after every layout —
-  // immune to async reflows (font swap, image load, etc.) briefly throwing
-  // the numbers off mid-scroll.
   useEffect(() => {
     const ids = ['hero', ...NAV.map(n => n.id)]
     const els = ids
@@ -54,7 +49,8 @@ export default function Navbar() {
 
     els.forEach(el => observer.observe(el))
     return () => observer.disconnect()
-  }, [])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lang])
 
   const onHero = activeSection === null
 
@@ -65,14 +61,13 @@ export default function Navbar() {
         className={`${s.pill} ${scrolled ? s.pillScrolled : ''}`}
         transition={{ type: 'spring', stiffness: 220, damping: 30, mass: 0.8 }}
       >
-        {/* Left — badge + logo (logo is also an "active" indicator for hero) */}
+        {/* Left — badge + logo */}
         <div className={s.leftGroup}>
           <span className={`${s.available} ${scrolled ? s.availableGone : ''}`}>
             <span className={s.availableDot} />
-            Available for projects
+            {tr.available}
           </span>
 
-          {/* Logo — gets the same glass pill as nav items when on hero */}
           <a href="#" className={`${s.logo} ${onHero ? s.logoActive : ''}`}>
             {onHero && (
               <motion.span
@@ -110,15 +105,22 @@ export default function Navbar() {
           })}
         </nav>
 
-        {/* Right — CTA */}
-        <a
-          href="https://github.com/pozhidaevnikita2743-arch"
-          target="_blank"
-          rel="noopener noreferrer"
-          className={s.ctaBtn}
-        >
-          GitHub
-        </a>
+        {/* Right — lang toggle + GitHub */}
+        <div className={s.rightGroup}>
+          <button className={s.langToggle} onClick={toggle} aria-label="Switch language">
+            <span className={lang === 'ru' ? s.langActive : s.langInactive}>RU</span>
+            <span className={s.langSep}>/</span>
+            <span className={lang === 'en' ? s.langActive : s.langInactive}>EN</span>
+          </button>
+          <a
+            href="https://github.com/pozhidaevnikita2743-arch"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={s.ctaBtn}
+          >
+            GitHub
+          </a>
+        </div>
       </motion.div>
     </header>
   )

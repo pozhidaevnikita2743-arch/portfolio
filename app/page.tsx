@@ -1,4 +1,6 @@
 'use client'
+import { LangProvider, useLang } from '@/lib/LangContext'
+import { t } from '@/lib/i18n'
 import Navbar from '@/components/Navbar'
 import HeroFigure from '@/components/HeroSprite'
 import CursorGlow from '@/components/CursorGlow'
@@ -12,6 +14,8 @@ import { skills } from '@/lib/skills'
 import s from './page.module.css'
 
 function SkillsSection() {
+  const { lang } = useLang()
+  const tr = t[lang].skills
   const { ref, inView } = useInView(0.1)
   return (
     <section
@@ -20,8 +24,8 @@ function SkillsSection() {
       ref={ref as React.RefObject<HTMLElement>}
     >
       <div className="container">
-        <div className={s.sectionLabel}>// skills</div>
-        <h2 className={s.sectionTitle}>Tech Stack</h2>
+        <div className={s.sectionLabel}>{tr.label}</div>
+        <h2 className={s.sectionTitle}>{tr.title}</h2>
         <div className={s.skillsGrid}>
           {skills.map((skill, i) => (
             <SkillBadge key={skill.name} skill={skill} index={i} inView={inView} />
@@ -33,7 +37,10 @@ function SkillsSection() {
   )
 }
 
-export default function Page() {
+function PageContent() {
+  const { lang } = useLang()
+  const tr = t[lang]
+
   return (
     <>
       <CursorGlow />
@@ -45,7 +52,7 @@ export default function Page() {
         <div className={`container ${s.heroContent}`}>
           <div className={s.heroEyebrow}>
             <span className={s.eyebrowDot} />
-            Available for projects
+            {tr.available}
           </div>
 
           <h1 className={s.heroName}>
@@ -55,23 +62,20 @@ export default function Page() {
           </h1>
 
           <p className={s.heroTagline}>
-            Web Developer<span className={s.taglineSep}> / </span>Russia
+            {tr.hero.tagline}<span className={s.taglineSep}> / </span>{tr.hero.taglineLocation}
           </p>
 
-          <p className={s.heroBio}>
-            Building commercial web products from Russia.
-            Full-stack focus on Next.js, TypeScript, and crafted UI.
-          </p>
+          <p className={s.heroBio}>{tr.hero.bio}</p>
 
           <div className={s.heroCtas}>
-            <a href="#projects" className={s.ctaPrimary}>View Work</a>
-            <a href="#contact"  className={s.ctaSecondary}>Get in touch</a>
+            <a href="#projects" className={s.ctaPrimary}>{tr.hero.ctaPrimary}</a>
+            <a href="#contact"  className={s.ctaSecondary}>{tr.hero.ctaSecondary}</a>
           </div>
         </div>
 
         <div className={s.scrollHint}>
           <div className={s.scrollLine} />
-          <span>scroll</span>
+          <span>{tr.hero.scroll}</span>
         </div>
       </section>
 
@@ -79,50 +83,40 @@ export default function Page() {
       <SectionReveal>
         <section className={s.about} id="about">
           <div className="container">
-            <div className={s.sectionLabel}>// about</div>
-            <h2 className={s.sectionTitle}>Who I Am</h2>
-            <p className={s.aboutText}>
-              Web developer from Russia. I build commercial websites and
-              web applications — from company landing pages to full e-commerce
-              platforms. Everything I ship is custom-coded, no templates, no shortcuts.
-            </p>
+            <div className={s.sectionLabel}>{tr.about.label}</div>
+            <h2 className={s.sectionTitle}>{tr.about.title}</h2>
+            <p className={s.aboutText}>{tr.about.text}</p>
 
             <div className={s.aboutStats}>
               <div className={s.statItem}>
                 <div className={s.statNumber}>3+</div>
-                <div className={s.statLabel}>Years of experience</div>
+                <div className={s.statLabel}>{tr.about.stat1Label}</div>
               </div>
               <div className={s.statItem}>
                 <div className={s.statNumber}>15+</div>
-                <div className={s.statLabel}>Projects delivered</div>
+                <div className={s.statLabel}>{tr.about.stat2Label}</div>
               </div>
               <div className={s.statItem}>
                 <div className={s.statNumber}>Full-stack</div>
-                <div className={s.statLabel}>Frontend, backend & integrations</div>
+                <div className={s.statLabel}>{tr.about.stat3Label}</div>
               </div>
             </div>
 
             <div className={s.aboutCards}>
               <div className={s.aboutCard}>
                 <div className={s.aboutCardIcon}><IconFrontend /></div>
-                <div className={s.aboutCardTitle}>Frontend</div>
-                <div className={s.aboutCardDesc}>
-                  React, Next.js, TypeScript — crafted UI with smooth animations and pixel-perfect layouts.
-                </div>
+                <div className={s.aboutCardTitle}>{tr.about.card1Title}</div>
+                <div className={s.aboutCardDesc}>{tr.about.card1Desc}</div>
               </div>
               <div className={s.aboutCard}>
                 <div className={s.aboutCardIcon}><IconBackend /></div>
-                <div className={s.aboutCardTitle}>Backend</div>
-                <div className={s.aboutCardDesc}>
-                  APIs, databases, server logic — reliable systems built to handle real traffic.
-                </div>
+                <div className={s.aboutCardTitle}>{tr.about.card2Title}</div>
+                <div className={s.aboutCardDesc}>{tr.about.card2Desc}</div>
               </div>
               <div className={s.aboutCard}>
                 <div className={s.aboutCardIcon}><IconIntegrations /></div>
-                <div className={s.aboutCardTitle}>Integrations</div>
-                <div className={s.aboutCardDesc}>
-                  CRM, chatbots, payment systems and deployment — connecting everything end-to-end.
-                </div>
+                <div className={s.aboutCardTitle}>{tr.about.card3Title}</div>
+                <div className={s.aboutCardDesc}>{tr.about.card3Desc}</div>
               </div>
             </div>
           </div>
@@ -142,12 +136,9 @@ export default function Page() {
         <section className={s.contact} id="contact">
           <div className="container">
             <div className={s.contactInner}>
-              <div className={s.sectionLabel}>// contact</div>
-              <h2 className={s.sectionTitle}>Let&apos;s Work Together</h2>
-              <p className={s.contactText}>
-                Open for freelance projects and long-term collaborations.
-                Fast response, clear communication, quality delivery.
-              </p>
+              <div className={s.sectionLabel}>{tr.contact.label}</div>
+              <h2 className={s.sectionTitle}>{tr.contact.title}</h2>
+              <p className={s.contactText}>{tr.contact.text}</p>
               <div className={s.contactCards}>
                 <a href="mailto:nftcollector2743@gmail.com" className={s.contactCard}>
                   <div className={s.cardLeft}>
@@ -157,10 +148,10 @@ export default function Page() {
                   <div className={s.cardDivider} />
                   <div className={s.cardMiddle}>
                     <div className={s.contactCardHandle}>nftcollector2743@gmail.com</div>
-                    <div className={s.contactCardDesc}>Project inquiries, proposals and briefs. Preferred for detailed discussions.</div>
+                    <div className={s.contactCardDesc}>{tr.contact.emailDesc}</div>
                   </div>
                   <div className={s.cardRight}>
-                    <span className={s.contactCardMeta}>Reply within 24h</span>
+                    <span className={s.contactCardMeta}>{tr.contact.emailMeta}</span>
                     <span className={s.contactCardArrow}>→</span>
                   </div>
                 </a>
@@ -173,10 +164,10 @@ export default function Page() {
                   <div className={s.cardDivider} />
                   <div className={s.cardMiddle}>
                     <div className={s.contactCardHandle}>@soleth_2743</div>
-                    <div className={s.contactCardDesc}>Quick questions, project chat and calls. Fastest way to reach me.</div>
+                    <div className={s.contactCardDesc}>{tr.contact.telegramDesc}</div>
                   </div>
                   <div className={s.cardRight}>
-                    <span className={s.contactCardMeta}>Usually online</span>
+                    <span className={s.contactCardMeta}>{tr.contact.telegramMeta}</span>
                     <span className={s.contactCardArrow}>→</span>
                   </div>
                 </a>
@@ -189,10 +180,10 @@ export default function Page() {
                   <div className={s.cardDivider} />
                   <div className={s.cardMiddle}>
                     <div className={s.contactCardHandle}>pozhidaevnikita2743-arch</div>
-                    <div className={s.contactCardDesc}>Portfolio projects, open source contributions and code samples.</div>
+                    <div className={s.contactCardDesc}>{tr.contact.githubDesc}</div>
                   </div>
                   <div className={s.cardRight}>
-                    <span className={s.contactCardMeta}>View profile</span>
+                    <span className={s.contactCardMeta}>{tr.contact.githubMeta}</span>
                     <span className={s.contactCardArrow}>→</span>
                   </div>
                 </a>
@@ -205,11 +196,19 @@ export default function Page() {
       <footer className={s.footer}>
         <div className="container">
           <span className={s.footerText}>
-            © {new Date().getFullYear()} Nikita Pozhidaev — Built with Next.js
+            © {new Date().getFullYear()} Nikita Pozhidaev — {tr.footer}
           </span>
         </div>
       </footer>
     </>
+  )
+}
+
+export default function Page() {
+  return (
+    <LangProvider>
+      <PageContent />
+    </LangProvider>
   )
 }
 

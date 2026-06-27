@@ -2,6 +2,7 @@ export interface Project {
   id: string
   title: string
   description: string
+  descriptionRu?: string
   tech: string[]
   github?: string
   githubBase: string

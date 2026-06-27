@@ -8,6 +8,8 @@ import {
   type MotionValue,
 } from 'framer-motion'
 import { Project } from '@/lib/types'
+import { useLang } from '@/lib/LangContext'
+import { t } from '@/lib/i18n'
 import s from './HorizontalMarquee.module.css'
 
 interface Props { projects: Project[] }
@@ -20,6 +22,8 @@ const CARD_SPACING    = 500
 const SPRING = { stiffness: 120, damping: 20, mass: 0.6 }
 
 export default function HorizontalMarquee({ projects }: Props) {
+  const { lang } = useLang()
+  const tr = t[lang].projects
   const sectionRef  = useRef<HTMLElement>(null)
   const trackRef    = useRef<HTMLDivElement>(null)
   const rawProgress = useMotionValue(0)                   // 0 … N-1, set imperatively
@@ -91,14 +95,14 @@ export default function HorizontalMarquee({ projects }: Props) {
     <section ref={sectionRef} className={s.marqueeSection} id="projects">
       <div className={s.stickyViewport}>
         <header className={s.sectionHeader}>
-          <p className={s.sectionLabel}>// selected work</p>
-          <h2 className={s.sectionTitle}>Projects</h2>
+          <p className={s.sectionLabel}>{tr.label}</p>
+          <h2 className={s.sectionTitle}>{tr.title}</h2>
         </header>
 
         <div className={s.windowTrack} ref={trackRef}>
           {projects.map((project, i) => (
             <CardSlot key={project.id} index={i} progress={progress}>
-              <MacWindow project={project} />
+              <MacWindow project={project} lang={lang} />
             </CardSlot>
           ))}
         </div>
@@ -167,7 +171,7 @@ function CardSlot({ index, progress, children }: SlotProps) {
 
 // ── MacBook window ────────────────────────────────────────────────
 
-function MacWindow({ project }: { project: Project }) {
+function MacWindow({ project, lang }: { project: Project; lang: 'ru' | 'en' }) {
   const displayUrl = project.live
     ? project.live.replace(/^https?:\/\//, '').replace(/\/$/, '')
     : `github.com/${project.githubBase}`
@@ -210,7 +214,7 @@ function MacWindow({ project }: { project: Project }) {
           <span className={s.projectCategory}>{project.category}</span>
         </div>
         <h3 className={s.projectTitle}>{project.title}</h3>
-        <p className={s.projectDesc}>{project.description}</p>
+        <p className={s.projectDesc}>{lang === 'ru' && project.descriptionRu ? project.descriptionRu : project.description}</p>
         <div className={s.techStack}>
           {project.tech.map(t => <span key={t} className={s.techBadge}>{t}</span>)}
         </div>

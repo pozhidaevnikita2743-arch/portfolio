@@ -189,6 +189,43 @@
   /* framer-motion animates position — no CSS transition here */
 }
 
+/* ── Right group ──────────────────────────────────────────────── */
+.rightGroup {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  flex-shrink: 0;
+}
+
+/* ── Language toggle ──────────────────────────────────────────── */
+.langToggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--r-full);
+  padding: 7px 13px;
+  background: none;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: border-color var(--t-fast);
+}
+
+.langToggle:hover { border-color: rgba(255, 255, 255, 0.22); }
+
+.langActive  { color: var(--text-primary); }
+.langInactive { color: var(--text-tertiary, rgba(255,255,255,0.3)); }
+
+.langSep {
+  color: rgba(255, 255, 255, 0.2);
+  font-weight: 400;
+}
+
 /* ── GitHub button ────────────────────────────────────────────── */
 .ctaBtn {
   display: inline-flex;
@@ -218,6 +255,7 @@
 
 /* ── Responsive ───────────────────────────────────────────────── */
 @media (max-width: 768px) {
-  .nav       { display: none; }
-  .available { display: none; }
+  .nav        { display: none; }
+  .available  { display: none; }
+  .langToggle { padding: 7px 10px; }
 }
